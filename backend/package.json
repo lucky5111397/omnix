@@ -1,0 +1,15 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": " nodemon index.js"
+  },
+  "dependencies": {
+    "ioredis": "^6.0.0"
+  }
+}
