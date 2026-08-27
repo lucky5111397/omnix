@@ -101,16 +101,16 @@ Users start with **100 free credits**; additional credits can be purchased via t
 ## System Architecture
 ```mermaid
 flowchart TD
-    User["User (Browser)"] --> Frontend["React Frontend"]
-    Frontend --> Gateway["API Gateway (Express)"]
-    Gateway --> AuthSrv["Auth Service"]
-    Gateway --> AgentSrv["Agent Service"]
-    AgentSrv --> Graph["LangChain StateGraph"]
-    Graph --> Agent["Specialised Agent"]
-    Agent --> LLM["LLM / External Tool"]
-    Agent --> MongoDB["MongoDB"]
-    Agent --> Vector["Qdrant"]
-    AgentSrv --> Redis["Redis (Session Store)"]
+    U["User"] --> F["React Frontend"]
+    F --> G["API Gateway"]
+    G --> A["Auth Service"]
+    G --> AG["Agent Service"]
+    AG --> S["LangChain StateGraph"]
+    S --> X["Specialised Agent"]
+    X --> L["LLM / External Tool"]
+    X --> M["MongoDB"]
+    X --> Q["Qdrant"]
+    AG --> R["Redis Session Store"]
 ```
 The diagram reflects the actual folder layout (`backend/services/...`).
 
