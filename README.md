@@ -224,11 +224,11 @@ OMNIX is a **full‑stack Generative AI platform** that lets end‑users interac
 | Vision / image analysis | Image description using Gemini (`vision` & `imageAnalyzer` agents). |
 | Artifact generation | JSON‑structured project files for code generation agents. |
 | Conversation history | Memory retrieval via LangChain `getMemory`. |
-| Authentication | Firebase token verification, Redis‑based session store. |
-| Credit management | Per‑agent credit costs, real‑time deduction, plan updates. |
-| File uploads | Multer middleware handles PDF, PPT and image uploads. |
-| Persistence | MongoDB for user & payment data; Redis for session data. |
-| Docker‑based deployment | `docker compose up --build` runs all services locally. |
+| Authentication | Firebase token verification, Redis‑based session store.
+| Credit management | Per‑agent credit costs, real‑time deduction, plan updates.
+| File uploads | Multer middleware handles PDF, PPT and image uploads.
+| Persistence | MongoDB for user & payment data; Redis for session data.
+| Docker‑based deployment | `docker compose up --build` runs all services locally.
 
 ---
 
@@ -274,7 +274,7 @@ All agents share a common **state object** (userId, sessionId, prompt, etc.), pe
 | @langchain/tavily | Web‑search tool |
 | Qdrant (via `vectorDb.js`) | Vector store for RAG |
 
-**AI / External Tools**
+## AI / External Tools
 | Provider / Tool | Model / Role |
 |---|---|
 | Groq | `openai/gpt‑oss‑120b` – default for most agents |
@@ -291,9 +291,7 @@ flowchart TD
     User[User (Browser)] --> Frontend[React Frontend]
     Frontend --> Gateway[API Gateway (Express)]
     Gateway --> AuthSrv[Auth Service]
-    Gateway --> ChatSrv[Chat Service]
     Gateway --> AgentSrv[Agent Service]
-    Gateway --> BillingSrv[Billing Service]
     AgentSrv --> Graph[LangChain StateGraph]
     Graph --> Agent[Specialised Agent]
     Agent --> LLM[LLM / External Tool]
@@ -330,10 +328,10 @@ The `StateGraph` is defined in `backend/services/agent/graph/`. The router retur
 4. `agent.controller.js` builds the **shared state** (`userId`, `sessionId`, `agent`, `prompt`, file info, etc.).
 5. The LangChain `StateGraph` starts at the **router** node, which selects the appropriate agent based on `state.agent`.
 6. The chosen agent runs:
-   - Checks credit limits (`checkAgentLimit`).
-   - Calls `deductCredits` to subtract the cost.
-   - Loads the configured LLM via `getModel`.
-   - Executes the task (chat, code gen, PDF RAG, etc.).
+    - Checks credit limits (`checkAgentLimit`).
+    - Calls `deductCredits` to subtract the cost.
+    - Loads the configured LLM via `getModel`.
+    - Executes the task (chat, code gen, PDF RAG, etc.).
 7. Agent returns an updated state containing `aiResponse`, remaining `credits`, and optional `artifacts`.
 8. The controller sends the final state back to the frontend.
 9. Frontend displays the response and updates the conversation view.
@@ -394,7 +392,7 @@ OMNIX/
 │   └── package.json
 ├── backend/
 │   ├── gateway/              # API gateway (Express)
-│   └── services/
+│   └── services/            
 │       ├── auth/            # Firebase auth, Redis sessions, MongoDB user model
 │       ├── chat/            # (placeholder – not detailed in this repo)
 │       ├── billing/         # Credit & plan management
@@ -441,8 +439,7 @@ The gateway forwards authenticated requests to the appropriate micro‑service; 
    ```
    - The **frontend** will be available at `http://localhost:5173` (Vite dev server).
    - Backend services expose ports defined in `docker-compose.yml` (e.g., agent service on `8003`).
-4. **Run the UI** – the React app will communicate with the gateway at `http://localhost:<gateway‑port>`.
-5. **Stopping**
+4. **Stopping**
    ```bash
    docker compose down
    ```
@@ -501,183 +498,9 @@ Only the variable names are listed; actual secret values must be kept out of ver
 ## 19. Author
 **Lucky Gupta**
 
-School of Management Sciences, Lucknow
-
 ---
 
 ## 20. Closing Statement
 OMNIX demonstrates a practical approach to building modular Generative AI systems by combining full‑stack development, microservice architecture, LangChain‑based agent orchestration, document intelligence, external AI tools, persistent conversations, authentication, and usage management in a unified platform.
 
 **OMNIX — One Platform. Multiple AI Capabilities.**
-
-## Features
-
-* AI-powered chat experience
-* Multiple AI agent capabilities
-* Conversation and message management
-* Authentication and user management
-* Credit/billing management
-* File and image handling
-* Artifact generation and preview
-* Presentation generation
-* Modular backend service architecture
-* Docker-based backend service setup
-
-## Architecture
-
-The application follows a modular service-based architecture.
-
-### Frontend
-
-The frontend provides the user interface and communicates with the backend through the API gateway.
-
-Main responsibilities:
-
-* Chat interface
-* Conversation management
-* Message rendering
-* Artifact preview
-* File uploads
-* Authentication UI
-* AI interaction
-
-### Backend Gateway
-
-The gateway acts as the main entry point for frontend API requests and routes requests to the appropriate backend service.
-
-### Agent Service
-
-Handles AI agent functionality and agent-related processing.
-
-### Auth Service
-
-Handles:
-
-* User authentication
-* User sessions
-* User-related authentication operations
-
-### Chat Service
-
-Handles:
-
-* Conversations
-* Messages
-* Chat-related operations
-* Conversation updates
-
-### Billing Service
-
-Handles:
-
-* User credits
-* Credit usage
-* Billing-related operations
-
-## Getting Started
-
-### Prerequisites
-
-Make sure the following are installed:
-
-* Node.js
-* npm
-* Docker
-* Docker Compose
-
-## Environment Variables
-
-Each service can have its own environment configuration.
-
-Example:
-
-```text
-backend/
-├── gateway/
-│   └── .env
-└── services/
-    ├── agent/
-    │   └── .env
-    ├── auth/
-    │   └── .env
-    ├── billing/
-    │   └── .env
-    └── chat/
-        └── .env
-
-frontend/
-└── .env
-```
-
-Environment files contain local secrets and configuration and should **not** be committed to Git.
-
-Use `.env.example` files when sharing the required environment variable names without exposing secret values.
-
-## Installation
-
-Clone the repository:
-
-```bash
-git clone <repository-url>
-cd OMNIX
-```
-
-Install frontend dependencies:
-
-```bash
-cd frontend
-npm install
-```
-
-Install backend dependencies according to the individual service configuration.
-
-## Running the Application
-
-### Frontend
-
-```bash
-cd frontend
-npm run dev
-```
-
-### Backend
-
-Backend services can be started using the provided Docker Compose configuration:
-
-```bash
-cd backend
-docker compose up --build
-```
-
-To stop the services:
-
-```bash
-docker compose down
-```
-
-## Security
-
-The following files and directories should never be committed to the repository:
-
-* `.env`
-* `.env.*`
-* `node_modules/`
-* `dist/`
-* `serviceAccountKey.json`
-* Private keys and credentials
-
-Keep all production secrets in environment variables or an appropriate secret-management system.
-
-## Development
-
-Before committing changes:
-
-```bash
-git status
-```
-
-Review the changed files and make sure no secrets or generated files are included.
-
-## License
-
-This project is currently under development.
