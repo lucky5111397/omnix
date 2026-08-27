@@ -288,16 +288,16 @@ All agents share a common **state object** (userId, sessionId, prompt, etc.), pe
 ## 6. System Architecture
 ```mermaid
 flowchart TD
-    User[User (Browser)] --> Frontend[React Frontend]
-    Frontend --> Gateway[API Gateway (Express)]
-    Gateway --> AuthSrv[Auth Service]
-    Gateway --> AgentSrv[Agent Service]
-    AgentSrv --> Graph[LangChain StateGraph]
-    Graph --> Agent[Specialised Agent]
-    Agent --> LLM[LLM / External Tool]
-    LLM --> DB[MongoDB]
-    LLM --> Vector[Qdrant]
-    AgentSrv --> Redis[Redis (session store)]
+    U["User"] --> F["React Frontend"]
+    F --> G["API Gateway"]
+    G --> A["Auth Service"]
+    G --> AG["Agent Service"]
+    AG --> S["LangChain StateGraph"]
+    S --> X["Specialised Agent"]
+    X --> L["LLM / External Tool"]
+    X --> M["MongoDB"]
+    X --> Q["Qdrant"]
+    AG --> R["Redis Session Store"]
 ```
 The diagram reflects the actual folder layout (`backend/services/...`) and the data flow confirmed by the source code.
 
