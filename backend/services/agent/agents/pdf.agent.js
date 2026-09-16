@@ -1,7 +1,7 @@
 import { getModel } from "../config/llmModels.js";
 import generatePdf from "../utils/generatePdf.js";
 import deductCredits from "../utils/deductCredits.js";
-import { checkAgentLimit } from "../config/agentlimit.js";
+import { checkAgentLimit } from "../config/agentLimit.js";
 import fs from "fs/promises";
 import path from "path";
 
@@ -73,8 +73,11 @@ ${state.prompt}
             pdfBuffer
         );
 
+        const publicGatewayUrl =
+            process.env.PUBLIC_GATEWAY_URL || "http://localhost:8000";
+
         const downloadUrl =
-            `http://localhost:8003/uploads/${filename}`;
+            `${publicGatewayUrl}/api/agent/uploads/${filename}`;
 
         const creditResponse =
             await deductCredits(

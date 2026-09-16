@@ -117,11 +117,6 @@ const protect = async (req, res, next) => {
         );
 
         console.log(
-            "Session Key:",
-            sessionKey
-        );
-
-        console.log(
             "User ID:",
             req.user.userId
         );
@@ -139,11 +134,6 @@ const protect = async (req, res, next) => {
         console.log(
             "Plan:",
             req.user.plan
-        );
-
-        console.log(
-            "Session ID:",
-            req.user.sessionId
         );
 
 

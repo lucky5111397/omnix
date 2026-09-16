@@ -1,5 +1,191 @@
 services:
   redis:
-    image: redis
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - omnix-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:v1.13.4
+    ports:
+      - "127.0.0.1:6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - omnix-network
+    healthcheck:
+      test: ["CMD-SHELL", "/bin/bash -c \"exec 3<>/dev/tcp/localhost/6333 && echo -e 'GET /readyz HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && head -n 1 <&3 | grep -q '200'\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  auth:
+    build:
+      context: .
+      dockerfile: services/auth/Dockerfile
+    env_file:
+      - ./services/auth/.env
+    expose:
+      - "8001"
+    environment:
+      - PORT=8001
+      - REDIS_URL=redis://redis:6379
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
+      - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID:-}
+      - FIREBASE_CLIENT_EMAIL=${FIREBASE_CLIENT_EMAIL:-}
+      - FIREBASE_PRIVATE_KEY=${FIREBASE_PRIVATE_KEY:-}
+      - FIREBASE_SERVICE_ACCOUNT=${FIREBASE_SERVICE_ACCOUNT:-}
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - omnix-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:8001/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  chat:
+    build:
+      context: ./services/chat
+      dockerfile: Dockerfile
+    env_file:
+      - ./services/chat/.env
+    expose:
+      - "8002"
+    environment:
+      - PORT=8002
+      - REDIS_URL=redis://redis:6379
+      - AUTH_SERVICE_URL=http://auth:8001
+    depends_on:
+      redis:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
+    networks:
+      - omnix-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:8002/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  agent:
+    build:
+      context: ./services/agent
+      dockerfile: Dockerfile
+    env_file:
+      - ./services/agent/.env
+    expose:
+      - "8003"
+    environment:
+      - PORT=8003
+      - REDIS_URL=redis://redis:6379
+      - QDRANT_URL=http://qdrant:6333
+      - AUTH_SERVICE_URL=http://auth:8001
+      - CHAT_SERVICE_URL=http://chat:8002
+      - PUBLIC_GATEWAY_URL=${PUBLIC_GATEWAY_URL:-http://localhost:8000}
+    depends_on:
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
+      chat:
+        condition: service_healthy
+    networks:
+      - omnix-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:8003/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  billing:
+    build:
+      context: ./services/billing
+      dockerfile: Dockerfile
+    env_file:
+      - ./services/billing/.env
+    expose:
+      - "8004"
+    environment:
+      - PORT=8004
+      - AUTH_SERVICE_URL=http://auth:8001
+      - AUTH_SERVICE=http://auth:8001
+    depends_on:
+      auth:
+        condition: service_healthy
+    networks:
+      - omnix-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:8004/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
+      - REDIS_URL=redis://redis:6379
+      - AUTH_SERVICE_URL=http://auth:8001
+      - CHAT_SERVICE_URL=http://chat:8002
+      - AGENT_SERVICE_URL=http://agent:8003
+      - BILLING_SERVICE_URL=http://billing:8004
+    depends_on:
+      redis:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
+      chat:
+        condition: service_healthy
+      agent:
+        condition: service_healthy
+      billing:
+        condition: service_healthy
+    networks:
+      - omnix-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:8000/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+    driver: local
+  qdrant_data:
+    driver: local
+
+networks:
+  omnix-network:
+    driver: bridge

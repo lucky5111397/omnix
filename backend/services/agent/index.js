@@ -11,7 +11,7 @@ dotenv.config();
 initializeRedis();
 
 const app = express();
-const PORT = process.env.PORT || 8002;
+const PORT = process.env.PORT || 8003;
 
 app.use(express.json());
 app.use(cookieParser());

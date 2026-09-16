@@ -30,9 +30,6 @@ export const createConversations = async (req, res) => {
     try {
         const userId = req.headers["x-user-id"];
 
-        console.log("Headers:", req.headers);
-        console.log("UserId:", userId);
-
         if (!userId) {
             return res.status(400).json({ message: "Missing x-user-id header" });
         }

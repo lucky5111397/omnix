@@ -1,0 +1,74 @@
+name: "Bug Report"
+description: "File a reproducible problem or unexpected error in OMNIX"
+title: "[BUG]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thank you for reporting a bug!
+        Please provide clear reproduction steps and error logs. Ensure no secrets, tokens, or private credentials are included in this issue.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Select the microservice or area where the bug was observed.
+      options:
+        - Frontend
+        - API Gateway
+        - Auth Service
+        - Billing Service
+        - Chat Service
+        - Agent Service
+        - Database / Redis / Qdrant
+        - Build / Tooling
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of the bug.
+      placeholder: Describe the problem...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Detailed steps to reproduce the behavior.
+      placeholder: |
+        1. Navigate to '...'
+        2. Click on '...'
+        3. Observe error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs Actual Behavior
+      description: What did you expect to happen, and what happened instead?
+      placeholder: |
+        Expected: ...
+        Actual: ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Context
+      description: OS, browser, Node version, or device details.
+      placeholder: |
+        - OS: Windows / macOS / Linux
+        - Node Version: 20.x
+        - Browser: Chrome / Firefox / Safari
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Error Output
+      description: Paste relevant terminal logs or console errors. (DO NOT include real API keys, passwords, or credentials!)
+      render: shell
+    validations:
+      required: false

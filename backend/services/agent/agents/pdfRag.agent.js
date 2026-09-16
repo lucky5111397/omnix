@@ -8,7 +8,7 @@ import {
     SystemMessage,
 } from "@langchain/core/messages";
 import deductCredits from "../utils/deductCredits.js";
-import { checkAgentLimit } from "../config/agentlimit.js";
+import { checkAgentLimit } from "../config/agentLimit.js";
 
 export const pdfRag = async (state) => {
     try {

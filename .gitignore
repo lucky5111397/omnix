@@ -39,3 +39,8 @@ Thumbs.db
 backend/services/agent/generated/
 backend/services/agent/temp/
 backend/services/agent/uploads/
+
+# Local AI engineering documents
+Omnix_PreLaunch.pdf
+AI_CONTRACT.md
+OODF*

@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "vitest run",
+    "benchmark": "node ../../scripts/perf/gateway-benchmark.mjs"
   },
   "keywords": [],
   "author": "",
@@ -20,5 +22,10 @@
     "ioredis": "^6.0.0",
     "morgan": "^1.11.0",
     "nodemon": "^3.1.14"
+  },
+  "devDependencies": {
+    "autocannon": "^8.0.0",
+    "supertest": "^7.2.2",
+    "vitest": "^5.0.0"
   }
 }

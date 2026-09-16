@@ -21,8 +21,6 @@ const deductCredits = async (userId, agent, sessionId) => {
         console.log("========== DEDUCT CREDITS ==========");
         console.log("User ID:", userId);
         console.log("Agent:", agent);
-        console.log("Session ID:", sessionId);
-        console.log("Headers:", headers);
         console.log("AUTH_SERVICE_URL:", process.env.AUTH_SERVICE_URL);
 
         const response = await axios.post(

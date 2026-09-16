@@ -1,0 +1,57 @@
+name: "Feature Request"
+description: "Propose a new user-facing capability, API enhancement, or agent tool"
+title: "[FEAT]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### OMNIX Feature Proposal
+        Proposed features must align with the `Omnix_PreLaunch.pdf` baseline and maintain server-side authorization boundaries.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Target Component
+      description: Select the primary service or area for this feature.
+      options:
+        - Frontend
+        - API Gateway
+        - Auth Service
+        - Billing Service
+        - Chat Service
+        - Agent Service
+        - Cross-Service / Platform
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem or limitation does this feature address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_solution
+    attributes:
+      label: Proposed Solution
+      description: Detailed description of the proposed feature and expected experience.
+    validations:
+      required: true
+  - type: textarea
+    id: security_considerations
+    attributes:
+      label: Security & Authorization Considerations
+      description: How is input validated, authenticated, and authorized server-side (AI_CONTRACT.md §8)?
+      placeholder: |
+        - Authentication required: Yes/No
+        - Server-side role/permission validation: ...
+        - Rate limiting / cost boundary: ...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Any alternative solutions, patterns, or workarounds considered.
+    validations:
+      required: false

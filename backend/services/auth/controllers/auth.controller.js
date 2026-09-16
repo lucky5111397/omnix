@@ -32,8 +32,7 @@ const saveSession = async (sessionId, user) => {
   );
 
   console.log(
-    "Redis session updated:",
-    `session:${sessionId}`
+    "Redis session updated"
   );
 
   return true;
@@ -150,8 +149,7 @@ export const login = async (req, res) => {
 
 
     console.log(
-      "6. Session Created:",
-      sessionId
+      "6. Session Created"
     );
 
 
@@ -272,8 +270,7 @@ export const logout = async (
 
 
     console.log(
-      "Logout Session:",
-      sessionId
+      "Logout Session Triggered"
     );
 
 
@@ -512,10 +509,7 @@ export const updateUserPayment = async (
       ];
 
 
-    console.log(
-      "Session ID:",
-      sessionId
-    );
+
 
 
     if (sessionId) {
@@ -799,10 +793,7 @@ export const deductCredits = async (
       ];
 
 
-    console.log(
-      "Session ID:",
-      sessionId
-    );
+
 
 
     if (sessionId) {

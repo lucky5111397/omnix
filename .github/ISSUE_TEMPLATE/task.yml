@@ -1,0 +1,64 @@
+name: "Engineering Task"
+description: "Create an internal engineering task (refactoring, infrastructure, config, documentation)"
+title: "[TASK]: "
+labels: ["task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### OMNIX Engineering Task
+        All tasks must adhere to `AI_CONTRACT.md` scope boundaries and acceptance criteria.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Target Component
+      description: Select the primary service or area affected.
+      options:
+        - Frontend
+        - API Gateway
+        - Auth Service
+        - Billing Service
+        - Chat Service
+        - Agent Service
+        - Cross-Service / Infrastructure
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: Task Objective
+      description: What is the technical objective of this task and why is it needed?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: In-Scope Changes
+      description: Specific files, routes, or modules to be added or modified.
+      placeholder: |
+        - Modify backend/services/auth/...
+        - Add configuration for ...
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of Scope (Mandatory)
+      description: Explicitly declare what must NOT be changed during this task (per AI_CONTRACT.md §6).
+      placeholder: |
+        - Do not modify database schemas.
+        - Do not touch unrelated services.
+        - Do not add new third-party dependencies.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Concrete criteria required for task completion.
+      placeholder: |
+        - [ ] All CI checks pass.
+        - [ ] Manual verification passes with evidence.
+    validations:
+      required: true
