@@ -1,0 +1,73 @@
+name: "Security Vulnerability Report"
+description: "Report a security concern or vulnerability in OMNIX"
+title: "[SEC]: "
+labels: ["security", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## [WARNING] CRITICAL SECURITY NOTICE
+        **DO NOT post active credentials, private keys, API secrets, tokens, or sensitive exploit details in public GitHub Issues.**
+
+        If you have discovered a critical vulnerability, active credential leak, or severe security flaw, please contact the repository maintainers privately. Private reporting mechanisms (e.g., SECURITY.md) will be configured separately.
+
+        **NEVER provide real secrets or production credentials as issue evidence.** Always use sanitized placeholders (e.g., `REDACTED_API_KEY`, `user@example.com`).
+  - type: dropdown
+    id: category
+    attributes:
+      label: Vulnerability Category
+      description: Select the primary classification of the security concern.
+      options:
+        - Secret / Credential Exposure Risk
+        - Server-Side Authorization / Access Control Bypass
+        - Authentication / Session Management
+        - Prompt Injection / AI Tool Security Boundary
+        - Arbitrary Code Execution / Sandbox Isolation
+        - SSRF / Network Boundary Flaw
+        - Rate Limiting / Denial of Service
+        - Other Security Concern
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      options:
+        - Frontend
+        - API Gateway
+        - Auth Service
+        - Billing Service
+        - Chat Service
+        - Agent Service
+        - Database / Redis / Qdrant
+        - Infrastructure / Configuration
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary of Vulnerability
+      description: "High-level overview of the issue. (Remember: DO NOT paste real credentials, tokens, or live exploit payloads!)"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Conceptual Steps to Reproduce
+      description: Provide conceptual, sanitized steps to demonstrate the issue without publishing weaponized exploits or private data.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Potential Impact
+      description: What could an attacker achieve if this issue were exploited?
+    validations:
+      required: true
+  - type: textarea
+    id: remediation
+    attributes:
+      label: Suggested Remediation
+      description: Recommended architectural control, validation, or fix if known.
+    validations:
+      required: false

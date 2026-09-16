@@ -1,6 +1,6 @@
 import { getModel } from "../config/llmModels.js";
 import deductCredits from "../utils/deductCredits.js";
-import { checkAgentLimit } from "../config/agentlimit.js";
+import { checkAgentLimit } from "../config/agentLimit.js";
 
 export const visionAgent = async (state) => {
     try {

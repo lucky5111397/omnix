@@ -168,7 +168,6 @@ export const verifyPayment = async (
             {
                 razorpay_order_id,
                 razorpay_payment_id,
-                razorpay_signature,
             }
         );
 
@@ -209,15 +208,7 @@ export const verifyPayment = async (
                 .digest("hex");
 
 
-        console.log(
-            "Generated Signature:",
-            generatedSignature
-        );
 
-        console.log(
-            "Received Signature:",
-            razorpay_signature
-        );
 
 
         // ==============================================
@@ -318,8 +309,11 @@ export const verifyPayment = async (
         // AUTH SERVICE
         // ==============================================
 
+        const authBaseUrl =
+            process.env.AUTH_SERVICE_URL || process.env.AUTH_SERVICE;
+
         const authUrl =
-            `${process.env.AUTH_SERVICE}/auth/update-plan`;
+            `${authBaseUrl}/auth/update-plan`;
 
 
         console.log(

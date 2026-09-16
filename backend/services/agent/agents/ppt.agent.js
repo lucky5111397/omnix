@@ -1,7 +1,7 @@
 import { getModel } from "../config/llmModels.js";
 import { generatePpt } from "../utils/generatePpt.js";
 import deductCredits from "../utils/deductCredits.js";
-import { checkAgentLimit } from "../config/agentlimit.js";
+import { checkAgentLimit } from "../config/agentLimit.js";
 
 export const pptAgent = async (state) => {
     try {

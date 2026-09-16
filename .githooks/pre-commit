@@ -1,0 +1,3 @@
+#!/bin/sh
+# OMNIX Pre-Commit Hook: Automated Local Secret Scanning
+node scripts/security/scan-secrets.mjs --staged

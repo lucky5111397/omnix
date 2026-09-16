@@ -54,18 +54,8 @@ export const proxyWithHeader = (serviceUrl) => {
       );
 
       console.log(
-        "Cookies:",
-        srcReq.cookies
-      );
-
-      console.log(
         "User ID:",
         userId
-      );
-
-      console.log(
-        "Session ID:",
-        sessionId
       );
 
       console.log(
@@ -73,9 +63,8 @@ export const proxyWithHeader = (serviceUrl) => {
         {
           "x-user-id":
             proxyReqOpts.headers["x-user-id"],
-
           "x-session-id":
-            proxyReqOpts.headers["x-session-id"],
+            proxyReqOpts.headers["x-session-id"] ? "[REDACTED]" : undefined,
         }
       );
 
